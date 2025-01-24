@@ -18,6 +18,9 @@ RUN apt-get update && apt-get install -y \
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
+RUN pecl install mongodb \
+    && docker-php-ext-enable mongodb
+
 # Xdebug yapılandırması
 COPY ./docker_config/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
