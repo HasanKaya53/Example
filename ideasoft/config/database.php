@@ -120,7 +120,7 @@ return [
             'username' => env('MONGO_DB_USERNAME', 'root'),
             'password' => env('MONGO_DB_PASSWORD', 'root'),
             'options'  => [
-                'database' => 'admin', // Doğrulama için kullanılan database
+                'database' => 'admin'
             ],
         ]
 
