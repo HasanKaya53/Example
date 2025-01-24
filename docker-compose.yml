@@ -16,6 +16,9 @@ services:
     build:
       context: ./
     container_name: php_container
+    working_dir: /var/www/html
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./:/var/www/html
       - ./docker_config/php/php.ini:/usr/local/etc/php/php.ini
