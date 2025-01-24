@@ -1,9 +1,4 @@
-
-
-networks:
-  local_network: # Özel bir network tanımlıyoruz
-    driver: bridge
-
+version: '3.8'
 
 services:
   nginx:
@@ -20,7 +15,8 @@ services:
       - local_network
 
   php:
-    image: php:8.2-fpm
+    build:
+      context: ./
     container_name: php_container
     volumes:
       - ./:/var/www/html
@@ -36,10 +32,11 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
     volumes:
       - db_data:/var/lib/mysql
+      - ./docker_config/mysql/my.cnf:/etc/mysql/my.cnf
     networks:
       - local_network
 
@@ -57,7 +54,9 @@ services:
     networks:
       - local_network
 
-
 volumes:
   db_data:
 
+networks:
+  local_network:
+    driver: bridge
