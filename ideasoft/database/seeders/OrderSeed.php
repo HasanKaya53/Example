@@ -14,57 +14,62 @@ class OrderSeed extends Seeder
      */
     public function run(): void
     {
+        $date = new \DateTime();
+
         $orders = [
             [
-                "id" => 1,
                 "customerId" => 1,
                 "items" => [
                     [
                         "productId" => 102,
                         "quantity" => 10,
-                        "unitPrice" => "11.28",
-                        "total" => "112.80"
+                        "unitPrice" => 11.28,
+                        "total" => 112.80
                     ]
                 ],
-                "total" => "112.80"
+                "total" => 112.80,
+                "created_at" => $date->format('Y-m-d\TH:i:s.vP'),
+                "updated_at" => $date->format('Y-m-d\TH:i:s.vP')
             ],
             [
-                "id" => 2,
                 "customerId" => 2,
                 "items" => [
                     [
                         "productId" => 101,
                         "quantity" => 2,
-                        "unitPrice" => "49.50",
-                        "total" => "99.00"
+                        "unitPrice" => 49.50,
+                        "total" => 99.00
                     ],
                     [
                         "productId" => 100,
                         "quantity" => 1,
-                        "unitPrice" => "120.75",
-                        "total" => "120.75"
+                        "unitPrice" => 120.75,
+                        "total" => 120.75
                     ]
                 ],
-                "total" => "219.75"
+                "total" => 219.75,
+                "created_at" => $date->format('Y-m-d\TH:i:s.vP'),
+                "updated_at" => $date->format('Y-m-d\TH:i:s.vP')
             ],
             [
-                "id" => 3,
                 "customerId" => 3,
                 "items" => [
                     [
                         "productId" => 102,
                         "quantity" => 6,
-                        "unitPrice" => "11.28",
-                        "total" => "67.68"
+                        "unitPrice" => 11.28,
+                        "total" => 67.68
                     ],
                     [
                         "productId" => 100,
                         "quantity" => 10,
-                        "unitPrice" => "120.75",
-                        "total" => "1207.50"
+                        "unitPrice" => 120.75,
+                        "total" => 1207.50
                     ]
                 ],
-                "total" => "1275.18"
+                "total" => 1275.18,
+                "created_at" => $date->format('Y-m-d\TH:i:s.vP'),
+                "updated_at" => $date->format('Y-m-d\TH:i:s.vP')
             ]
         ];
 
