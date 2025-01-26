@@ -75,19 +75,36 @@ class OrderController extends Controller
         $total = 0;
         $items = [];
         foreach ($request->items as $item) {
+
             $product = Product::find($item['productId']);
-            $total += $product->price * $item['quantity'];
-            $items[] = [
+            $stock = $product->stock - $item['quantity'] - ($items[$item['productId']]['quantity'] ?? 0);
+            if ($stock < 0) {
+                return Response::responseJson(400, [], "There is not enough stock for the product with name: " . $product->name);
+            }
+
+            // Ürün miktarını ve toplam fiyatı hesapla
+            $quantity = intval($item['quantity']) + ($items[$item['productId']]['quantity'] ?? 0);
+            $total += $product->price * $quantity;
+            $productPrice = floatval($product->price);
+
+            //dizi olarak verileri tutuyorum.
+            $items[$item['productId']] = [
                 'productId' => $item['productId'],
-                'quantity' => $item['quantity'],
-                'unitPrice' => floatval($product->price),
-                'total' => floatval($product->price) * $item['quantity']
+                'quantity' => $quantity,
+                'unitPrice' => $productPrice,
+                'total' => floatval(number_format($productPrice * $quantity, 2, '.', '')),
+                'stock' => $stock
             ];
+        }
+
+        // Stokları güncelle
+        foreach ($items as $stock) {
+            Product::where('id', $stock['productId'])->update(['stock' => $stock['stock']]);
         }
         $insertData = [
             'customerId' => $request->customerId,
             'items' => $items,
-            'total' => $total
+            'total' => floatval(number_format($total, 2, '.', ''))
         ];
         $order = Order::create($insertData);
         if (!$order) {
@@ -95,5 +112,23 @@ class OrderController extends Controller
         }
 
         return Response::responseJson(200, 'Order added successfully');
+    }
+
+    public function deleteOrder(Request $request, $id): \Illuminate\Http\JsonResponse
+    {
+        if (empty($id)) {
+            return Response::responseJson(400, [], "Order id is required");
+        }
+
+        try {
+            $order = Order::find($id);
+            if (!$order) {
+                return Response::responseJson(404, [], "Order not found");
+            }
+            $order->delete();
+            return Response::responseJson(200, 'Order deleted successfully');
+        } catch (\Exception $e) {
+            return Response::responseJson( 500, [], "An error occurred while deleting order");
+        }
     }
 }
