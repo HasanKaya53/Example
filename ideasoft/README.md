@@ -68,6 +68,6 @@ Projeye erişim için: http://task.local
 3. MongoDB (MongoDB Compass ile bağlanabilirsiniz. nosql veri tabanı bilgilerimi size aktarmam açısından orders collectionunu burda oluşturdum. )
 4. MySQL (phpmyadmin üzerinden bağlanabilirsiniz. Aslında burda tercih ettiğim ilişkisel veri tabanının çok bir önemi olduğunu düşünmüyorum. Psql de kullanılabilirdi.)
 5. Docker (Docker ile projeyi çalıştırmak için docker-compose.yml dosyasını çalıştırmanız gerekmektedir.)
-
+6. Redis (Redisi ürün indirimini servisinde, cache yapmak için kullandım.) 
 ```
 
