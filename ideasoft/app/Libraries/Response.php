@@ -5,7 +5,7 @@ namespace App\Libraries;
 
 class Response
 {
-    public static function responseJson($statusCode = 200, $data = [], $errorMessage = null){
+    public static function responseJson($statusCode = 200, $data = [], $errorMessage = null, $responseKey = 'data'){
 
       $status = ($statusCode == 200) ? true : false;
       $responseData = [
@@ -15,7 +15,10 @@ class Response
       if(!$status){
           $responseData['error'] = $errorMessage;
       }else{
-          $responseData['data'] = $data;
+          if(!empty($responseKey))
+            $responseData[$responseKey] = $data;
+          else
+            $responseData = $data;
       }
 
 

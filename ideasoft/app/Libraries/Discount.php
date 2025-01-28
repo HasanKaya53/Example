@@ -2,80 +2,6 @@
 
 namespace App\Libraries;
 
-
-/*
-
-
-[
-  {
-    "rule_name": "%10 sepette indirim",
-    "rule_conf": [
-      {
-        "minAmount":1000,
-        "maxAmount":"",
-        "minQuantity" :"",
-        "maxQuantity" : "",
-        "activeProductCategories" : [],
-        "discount_conf":[
-          {
-            "discountAmount":"0",
-            "discountType":"%",
-            "discountCount":"1",
-            "discountRate":"10"
-          }
-
-        ]
-      }
-    ]
-  },
-
-  {
-    "rule_name": "6 adetın alıma 1 adet ücretsiz",
-    "rule_conf": [
-      {
-        "minAmount":"",
-        "maxAmount":"",
-        "minQuantity" : 6,
-        "maxQuantity" : "",
-        "activeProductCategories" :[2],
-        "discount_conf":[
-          {
-            "discountAmount":"free",
-            "discountType":"free",
-            "discountCount":"1",
-            "discountRate":"free"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "rule_name": "en ucuz ürüne %20 indirim yapılır",
-    "role_conf": [
-      {
-        "minAmount":"",
-        "maxAmount":"",
-        "minQuantity" : 2,
-        "maxQuantity" : "",
-        "activeProductCategories" :[1],
-        "discount_conf":[
-          {
-            "discountAmount":"discount",
-            "discountType":"minAmount",
-            "discountCount":"1",
-            "discountRate":"20"
-          }
-        ]
-      }
-
-    ]
-
-  }
-]
-
-
-*/
-
 use App\Models\Discount as DiscountModel;
 use App\Models\Product;
 class Discount
@@ -86,6 +12,11 @@ class Discount
     private float $totalQuantity = 0;
     private float $totalDiscount = 0;
     private float $totalDiscountedAmount = 0;
+
+    public function getTotalDiscountAmount(): float
+    {
+        return number_format($this->totalDiscountedAmount, 2, '.', '');
+    }
 
 
     public function __construct($order, $discounts)
@@ -154,6 +85,7 @@ class Discount
                             }
                         }
 
+                        $this->totalDiscountedAmount += $freePrice;
                         $discountData[] = $this->setResponse($rule['rule_name'], $freePrice ,$this->order['total']);
                     }
 
@@ -176,6 +108,8 @@ class Discount
                     $discountAmount = $cheapestItem * $rule['discount']['rate'] / 100;
                     $this->order['total'] -= $discountAmount;
                     $discountData[] = $this->setResponse($rule['rule_name'], $discountAmount ,$this->order['total']);
+
+                    $this->totalDiscountedAmount += $discountAmount;
                 }
 
             }  if ($rule['discount_type'] === 'percentage' && isset($rule['conditions']['minAmount'])) {
@@ -183,6 +117,7 @@ class Discount
                 if ($this->order['total'] >= $rule['conditions']['minAmount']) {
                     $discountAmount = $this->order['total'] * $rule['discount']['rate'] / 100;
                     $this->order['total'] = $this->order['total'] - $discountAmount;
+                    $this->totalDiscountedAmount += $discountAmount;
                 }
 
                 $discountData[] = $this->setResponse($rule['rule_name'], $discountAmount ,$this->order['total']);
@@ -194,6 +129,7 @@ class Discount
 
 
     }
+
 
     public function applyDiscount(){
 

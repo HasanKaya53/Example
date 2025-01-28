@@ -20,7 +20,25 @@ class DiscountController extends Controller
         $discounts = DiscountModel::orderBy('order', 'asc')->get()->toArray();
         $discount = new Discount($orders, $discounts);
 
-        return Response::responseJson(200, $discount->applyDiscount());
+
+        $discountData = $discount->applyDiscount();
+
+
+        if (empty($discountData)) {
+            return Response::responseJson(200, [], 'No discounts applied');
+        }
+        $discountData = $discountData[0];
+        $lastItem = end($discountData);
+        $lastSubtotal = $lastItem['subtotal'];
+
+        $returnData =[
+            'orderId' => $id,
+            'totalAmount' => $discount->getTotalDiscountAmount(),
+            'discounts' => $discountData,
+            'discountedTotal' => number_format(floatval($lastSubtotal), 2, '.', '')
+        ];
+
+        return Response::responseJson(200,$returnData , null, '');
 
 
 
