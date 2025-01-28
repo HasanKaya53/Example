@@ -14,7 +14,7 @@ class DiscountController extends Controller
         $orders = Order::find($id)->toArray();
 
         if (!$orders) {
-            return response()->json(['error' => 'Order not found']);
+            return Response::responseJson(404, [], 'Order not found');
         }
 
         $discounts = DiscountModel::orderBy('order', 'asc')->get()->toArray();
