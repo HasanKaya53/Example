@@ -61,6 +61,10 @@ Connection String: mongodb://root:root@localhost:27017/
 Redis: http://localhost:8081
 password: YOK
 
+# servis güvenliği için basic auth kullanılmıştır.
+username: admin
+password: admin
+
 Projeye erişim için: http://task.local
 ```
 
@@ -90,9 +94,8 @@ Projeye erişim için: http://task.local
 
 4. İndirim kurallarını tutmak için MongoDB kullandım. Çünkü indirim kurallarını daha dinamik bir şekilde tutmak istedim. İleride bu kuralların değişmesi durumunda, MongoDB üzerinden güncelleme yapılabilir. İlişkisel bir veritabanında tutmak istemedim çünkü indirim kurallarında çok fazla değişiklik olabilir ve bu durumda ilişkisel veritabanında güncelleme yapmak zor olabilir. MongoDB'de ise bu durum daha kolay olacaktır.
 
-
 5. İndirimlerin hesaplaması için kullandığımız serviste, önce ürün indirimlerini yapıyorum. Son olarak tüm sepete yapılan %10 kuralını uyguluyorum. Burda genel alışveriş sitelerini incelediğimde bu şekilde bir senaryo çıkıyor. Fakat mongoDB tarafında bulunan discounts collectionu içindeki order kısmından bu sıralama ayarı yapılabilir. 
 Örneğin 1000 TL bir alışveriş yapıldı. Ürün indirimi olarak %20 yapıldı. bu durumda sepet miktarı 800 TL olacaktır. Toplam sepet 1000 TL altında kaldığı için, %10 indirim uygulanmayacaktır.
 
-  
+6. JWT ile servis kontrolu yapılabilir. Giriş yapma kontrolleri olmadığı için JWT kullanmadım. Onun yerine basic auth kullandım, bu yöndem daha az güvenli fakat yine de bir güvenlik eklemek istedim.  
 ```
