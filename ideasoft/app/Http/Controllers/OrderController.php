@@ -82,7 +82,7 @@ use App\Models\Order;
  * )
  * @OA\Post(
  *      path="/add/order",
- *      summary="Add a new Order",
+ *      summary="Yeni Ürün Ekle",
  *      operationId="addOrder",
  *      tags={"Siparişler"},
  *      security={{"basicAuth": {}}},
