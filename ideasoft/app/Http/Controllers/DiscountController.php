@@ -9,6 +9,62 @@ use App\Models\Discount as DiscountModel;
 use App\Libraries\Response as Response;
 use Illuminate\Support\Facades\Redis;
 
+/**
+ * @OA\Post(
+ * path="/discount/list/{id}",
+ * summary="Siparişe uygulanan indirimleri listele",
+ * operationId="getDiscountsByOrderId",
+ * tags={"İndirimler"},
+ * security={{"basicAuth": {}}},
+ * @OA\Parameter(
+ * name="id",
+ * in="path",
+ * required=true,
+ * description="Order ID",
+ * @OA\Schema(type="string", example="6796d41193dc87a73d011182")
+ * ),
+ * @OA\Response(
+ * response=200,
+ * description="Indirimler başarıyla getirildi",
+ * @OA\JsonContent(
+ * type="object",
+ * @OA\Property(property="orderId", type="string", example="6796d41193dc87a73d011182"),
+ * @OA\Property(property="totalAmount", type="number", format="float", example=122.95),
+ * @OA\Property(
+ * property="discounts",
+ * type="array",
+ * @OA\Items(
+ * type="object",
+ * @OA\Property(property="discountReason", type="string", example="6 ürün al 1 bedava"),
+ * @OA\Property(property="discountAmount", type="string", example="11.28"),
+ * @OA\Property(property="subtotal", type="string", example="1116.72")
+ * )
+ * ),
+ * @OA\Property(property="discountedTotal", type="string", example="1005.05")
+ * )
+ * ),
+ * @OA\Response(
+ * response=404,
+ * description="Sipariş bulunamadı",
+ * @OA\JsonContent(
+ * type="object",
+ * @OA\Property(property="status", type="boolean", example=false),
+ * @OA\Property(property="message", type="string", example="Sipariş bulunamadı")
+ * )
+ * ),
+ * @OA\Response(
+ * response=400,
+ * description="Geçersiz İstek",
+ * @OA\JsonContent(
+ * type="object",
+ * @OA\Property(property="status", type="boolean", example=false),
+ * @OA\Property(property="message", type="string", example="Geçersiz istek")
+ * )
+ * )
+ * )
+ *
+ */
+
 class DiscountController extends Controller
 {
     public function list(Request $request, $id)

@@ -3,13 +3,9 @@
 use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/user', function (Request $request) {
-
-})->middleware();
+use L5Swagger\Http\Controllers\SwaggerController;
 
 
-//todo: add the middleware to the routes
 
 Route::middleware(AuthMiddleware::class)->group(function () {
     Route::get('/get/orders', 'App\Http\Controllers\OrderController@getOrders');
@@ -19,4 +15,6 @@ Route::middleware(AuthMiddleware::class)->group(function () {
 
     Route::post('/discount/list/{id}', 'App\Http\Controllers\DiscountController@list');
 });
+
+Route::get('/api/documentation', [SwaggerController::class, 'api'])->name('swagger.docs');
 

@@ -10,6 +10,165 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Order;
+
+/**
+ * @OA\Get(
+ *     path="/get/orders",
+ *     summary="Tüm Siparişleri listele",
+ *     tags={"Siparişler"},
+ *     security={{"basicAuth": {}}},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Başarılı",
+ *         @OA\JsonContent(
+ *             type="array",
+ *             @OA\Items(ref="#/components/schemas/Order")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Geçersiz İstek"
+ *     )
+ * )
+ * @OA\Get(
+ *     path="/get/order/{id}",
+ *     summary="ID'ye göre sipariş getir",
+ *     operationId="getOrderById",
+ *     tags={"Siparişler"},
+ *     security={{"basicAuth": {}}},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         description="Order ID",
+ *         @OA\Schema(type="string", example="6796d41193dc87a73d011182")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Order data retrieved successfully",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="status", type="boolean", example=true),
+ *             @OA\Property(
+ *                 property="data",
+ *                 type="object",
+ *                 @OA\Property(property="customerId", type="integer", example=1),
+ *                 @OA\Property(property="customer", type="string", example="Türker Jöntürk"),
+ *                 @OA\Property(property="id", type="string", example="6796d41193dc87a73d011182"),
+ *                 @OA\Property(
+ *                     property="items",
+ *                     type="array",
+ *                     @OA\Items(
+ *                         type="object",
+ *                         @OA\Property(property="productId", type="integer", example=102),
+ *                         @OA\Property(property="quantity", type="integer", example=100),
+ *                         @OA\Property(property="unitPrice", type="number", format="float", example=11.28),
+ *                         @OA\Property(property="total", type="number", format="float", example=1128)
+ *                     )
+ *                 ),
+ *                 @OA\Property(property="total", type="number", format="float", example=1128)
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Order not found",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="status", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="Order not found")
+ *         )
+ *     )
+ * )
+ * @OA\Post(
+ *      path="/add/order",
+ *      summary="Add a new Order",
+ *      operationId="addOrder",
+ *      tags={"Siparişler"},
+ *      security={{"basicAuth": {}}},
+ *      @OA\RequestBody(
+ *          required=true,
+ *          @OA\JsonContent(
+ *              type="object",
+ *              required={"customerId", "items"},
+ *              @OA\Property(property="customerId", type="integer", example=1),
+ *              @OA\Property(
+ *                  property="items",
+ *                  type="array",
+ *                  @OA\Items(
+ *                      type="object",
+ *                      required={"productId", "quantity"},
+ *                      @OA\Property(property="productId", type="integer", example=102),
+ *                      @OA\Property(property="quantity", type="integer", example=1)
+ *                  )
+ *              )
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=200,
+ *          description="Order created successfully",
+ *          @OA\JsonContent(
+ *              type="object",
+ *              @OA\Property(property="status", type="boolean", example=true),
+ *              @OA\Property(property="message", type="string", example="Order created successfully")
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=400,
+ *          description="Bad Request",
+ *          @OA\JsonContent(
+ *              type="object",
+ *              @OA\Property(property="status", type="boolean", example=false),
+ *              @OA\Property(property="message", type="string", example="Invalid input data")
+ *          )
+ *      )
+ *  )
+ * @OA\Post(
+ *     path="/delete/order/{id}",
+ *     summary="ID'ye göre sipariş sil",
+ *     operationId="deleteOrderById",
+ *     tags={"Siparişler"},
+ *     security={{"basicAuth": {}}},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         description="Order ID",
+ *         @OA\Schema(type="string", example="6796b49298894574290918b3")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Order deleted successfully",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="status", type="boolean", example=true),
+ *             @OA\Property(property="message", type="string", example="Order deleted successfully")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Order not found",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="status", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="Order not found")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Bad Request",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="status", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="Invalid input data")
+ *         )
+ *     )
+ * )
+ */
+
+
+
+
 class OrderController extends Controller
 {
     //
