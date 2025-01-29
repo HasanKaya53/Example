@@ -77,7 +77,8 @@ Projeye erişim için: http://task.local
 3. MongoDB (MongoDB Compass ile bağlanabilirsiniz. nosql veri tabanı bilgilerimi size aktarmam açısından orders collectionunu burda oluşturdum. )
 4. MySQL (phpmyadmin üzerinden bağlanabilirsiniz. Aslında burda tercih ettiğim ilişkisel veri tabanının çok bir önemi olduğunu düşünmüyorum. Psql de kullanılabilirdi.)
 5. Docker (Docker ile projeyi çalıştırmak için docker-compose.yml dosyasını çalıştırmanız gerekmektedir.)
-6. Redis (Redisi ürün indirimini servisinde, cache yapmak için kullandım.) 
+6. Redis (Redisi ürün indirimini servisinde, cache yapmak için kullandım.)
+7. Swagger (API dokümantasyonu için kullanıldı.) 
 ```
 
 
@@ -97,5 +98,10 @@ Projeye erişim için: http://task.local
 5. İndirimlerin hesaplaması için kullandığımız serviste, önce ürün indirimlerini yapıyorum. Son olarak tüm sepete yapılan %10 kuralını uyguluyorum. Burda genel alışveriş sitelerini incelediğimde bu şekilde bir senaryo çıkıyor. Fakat mongoDB tarafında bulunan discounts collectionu içindeki order kısmından bu sıralama ayarı yapılabilir. 
 Örneğin 1000 TL bir alışveriş yapıldı. Ürün indirimi olarak %20 yapıldı. bu durumda sepet miktarı 800 TL olacaktır. Toplam sepet 1000 TL altında kaldığı için, %10 indirim uygulanmayacaktır.
 
-6. JWT ile servis kontrolu yapılabilir. Giriş yapma kontrolleri olmadığı için JWT kullanmadım. Onun yerine basic auth kullandım, bu yöndem daha az güvenli fakat yine de bir güvenlik eklemek istedim.  
+6. JWT ile servis kontrolu yapılabilir. Giriş yapma kontrolleri olmadığı için JWT kullanmadım. Onun yerine basic auth kullandım, bu yöndem daha az güvenli fakat yine de bir güvenlik eklemek istedim.
+
+7. Swagger ile API dokümantasyonu yapıldı. http://task.local/api/documentation adresinden erişebilirsiniz.) 
+Auth bilgileri:
+username: admin
+password: admin  
 ```
